@@ -23,33 +23,43 @@ public class DequeueProblem {
         int lineCount = Integer.parseInt(br.readLine());
 
         DequeueNative dequeue = new DequeueNative();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < lineCount; i++) {
             String commandLine = br.readLine();
 
-            StringTokenizer tokens = new StringTokenizer(commandLine, " ");
+            if (commandLine.equals("pop_front")) {
+                sb.append(dequeue.popFront());
+                sb.append(System.lineSeparator());
+            } else if (commandLine.equals("pop_back")) {
+                sb.append(dequeue.popBack());
+                sb.append(System.lineSeparator());
+            } else if (commandLine.equals("front")) {
+                sb.append(dequeue.front());
+                sb.append(System.lineSeparator());
+            } else if (commandLine.equals("back")) {
+                sb.append(dequeue.back());
+                sb.append(System.lineSeparator());
+            } else if (commandLine.equals("size")) {
+                sb.append(dequeue.size());
+                sb.append(System.lineSeparator());
+            } else if (commandLine.equals("empty")) {
+                sb.append(dequeue.empty());
+                sb.append(System.lineSeparator());
+            } else {
+                String[] tokens = commandLine.split(" ");
 
-            String command = tokens.nextToken();
+                String command = tokens[0];
 
-            if (command.equals("push_front")) {
-                dequeue.pushFront(Integer.parseInt(tokens.nextToken()));
-            } else if (command.equals("push_back")) {
-                dequeue.pushBack(Integer.parseInt(tokens.nextToken()));
-            } else if (command.equals("pop_front")) {
-                bw.write(String.format("%d\n", dequeue.popFront()));
-            } else if (command.equals("pop_back")) {
-                bw.write(String.format("%d\n", dequeue.popBack()));
-            } else if (command.equals("front")) {
-                bw.write(String.format("%d\n", dequeue.front()));
-            } else if (command.equals("back")) {
-                bw.write(String.format("%d\n", dequeue.back()));
-            } else if (command.equals("size")) {
-                bw.write(String.format("%d\n", dequeue.size()));
-            } else if (command.equals("empty")) {
-                bw.write(String.format("%d\n", dequeue.empty()));
+                if (command.equals("push_front")) {
+                    dequeue.pushFront(Integer.parseInt(tokens[1]));
+                } else if (command.equals("push_back")) {
+                    dequeue.pushBack(Integer.parseInt(tokens[1]));
+                }
             }
         }
 
+        bw.write(sb.toString());
         bw.flush();
 
         isr.close();
