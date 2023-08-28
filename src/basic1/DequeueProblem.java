@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * https://www.acmicpc.net/problem/10866
  * 풀이1 : -> 시간초과
  * 사용한 자료구조 : LinkedList, 자바 LinkedList가 지원하는 메서드로 간단히 구현
- * 풀이2 : -> 시간초과
+ * 풀이2 : -> 시간초과, 이유 : 출력과정에서 String.format()을 이용. 제거하였더니 해결됨
  * 사용한 자료구조 : RingBuffer로 front, back 포인터로 구현할 operation 구현
  */
 
@@ -70,10 +70,10 @@ public class DequeueProblem {
 
     public static class DequeueNative {
         public static int BUFF_SIZE = 10000;
-        public static int[] nums = new int[BUFF_SIZE];
-        public static int front = 0;
-        public static int back = 0;
-        public static int size = 0;
+        public int[] nums = new int[BUFF_SIZE];
+        public int front = 0;
+        public int back = 0;
+        public int size = 0;
 
         public void pushFront(int value) {
             if (size != 0) {
@@ -167,7 +167,7 @@ public class DequeueProblem {
 
     public static class Dequeue {
 
-        public static LinkedList<Integer> dq = new LinkedList();
+        public LinkedList<Integer> dq = new LinkedList();
 
         public void pushFront(final int n) {
             dq.addFirst(n);
