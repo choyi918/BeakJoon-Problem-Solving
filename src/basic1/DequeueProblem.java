@@ -69,11 +69,11 @@ public class DequeueProblem {
     }
 
     public static class DequeueNative {
-        public static int BUFF_SIZE = 10000;
-        public int[] nums = new int[BUFF_SIZE];
-        public int front = 0;
-        public int back = 0;
-        public int size = 0;
+        private static int BUFF_SIZE = 10000;
+        private int[] nums = new int[BUFF_SIZE];
+        private int front = 0;
+        private int back = 0;
+        private int size = 0;
 
         public void pushFront(int value) {
             if (size != 0) {
