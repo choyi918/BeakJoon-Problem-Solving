@@ -2,7 +2,6 @@ package basic1.DP;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class BuyingCard {
@@ -34,26 +33,22 @@ public class BuyingCard {
     }
 
     private static int solveByTopDown(final int n, final List<Integer> prices) {
-        HashMap<Integer, Integer> dp = new HashMap<>();
-
-        dp.put(1, prices.get(0));
-        return recurByTopDown(n, 1, prices, dp);
+        int[] dp = new int[n + 1];
+        return recurByTopDown(n, prices, dp);
     }
 
-    private static int recurByTopDown(final int n, final int depth, final List<Integer> prices, final HashMap<Integer, Integer> dp) {
-        if (n - depth == 0)
+    private static int recurByTopDown(final int n, final List<Integer> prices, final int[] dp) {
+        if (n == 0)
             return 0;
 
-        if (n - depth == 1)
-            return dp.get(1);
+        if (dp[n] != 0)
+            return dp[n];
 
-        if (dp.containsKey(n)) {
-            dp.put(n, Math.max(dp.get(n), recurByTopDown(n - (depth + 1), (depth + 1), prices, dp) + prices.get(depth)));
-        } else {
-            dp.put(n, recurByTopDown(n - (depth + 1), (depth + 1), prices, dp) + prices.get(depth));
+        for (int i = 1; i <= n; i++) {
+            dp[n] = Math.max(dp[n], recurByTopDown(n - i, prices, dp) + prices.get(i - 1));
         }
 
-        return dp.get(n);
+        return dp[n];
     }
 
     private static int solveByBottomUp(final int n, final List<Integer> prices) {
@@ -73,7 +68,8 @@ public class BuyingCard {
          * 반례
          * 10
          * 1 100 160 1 1 1 1 1 1 1
-         * 500
+         * 500(오답)
+         * 520(정답)
          */
 
         /*
