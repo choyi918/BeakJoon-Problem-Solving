@@ -1,14 +1,13 @@
 package BarkingDog.Hexa09;
 
 import java.io.*;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /*
  * https://www.acmicpc.net/problem/1926
  */
-public class Picture {
+public class PracticePicture {
     public static void main(String[] args) throws IOException {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
