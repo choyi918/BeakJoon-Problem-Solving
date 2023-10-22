@@ -16,6 +16,109 @@ public class AppliedWallBreakingAndMovement {
         int ySize = Integer.parseInt(boardSpec.nextToken());
 
         int[][] board = new int[xSize][ySize];
+        int[][][] distance = new int[xSize][ySize][2];
+
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, -1, 0, 1};
+
+        for (int x = 0; x < xSize; x++) {
+            String[] boardLine = br.readLine().split("");
+            for (int y = 0; y < ySize; y++) {
+                board[x][y] = Integer.parseInt(boardLine[y]);
+
+                if (!(x == 0 && y == 0))
+                    distance[x][y][0] = distance[x][y][1] = -1;
+            }
+        }
+
+        Queue<Pos2> queue = new LinkedList<>();
+        queue.add(new Pos2(0, 0, false));
+
+        while (!queue.isEmpty()) {
+            Pos2 popped = queue.poll();
+
+            for (int i = 0; i < 4; i++) {
+                int nx = popped.x + dx[i];
+                int ny = popped.y + dy[i];
+                boolean broken = popped.broken;
+
+                if (nx < 0 || nx >= xSize || ny < 0 || ny >= ySize)
+                    continue;
+
+                int nextDist = distance[popped.x][popped.y][broken ? 1 : 0] + 1;
+
+                if (board[nx][ny] == 0 && distance[nx][ny][broken ? 1 : 0] == -1)  {
+                    distance[nx][ny][broken ? 1 : 0] = nextDist;
+                    queue.add(new Pos2(nx, ny, broken));
+                }
+
+                if (broken == false && board[nx][ny] == 1 && distance[nx][ny][1] == -1) {
+                    distance[nx][ny][1] = nextDist;
+                    queue.add(new Pos2(nx, ny, true));
+                }
+            }
+        }
+
+        //for print
+        System.out.println("------");
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++)
+                System.out.print(distance[x][y][0] + " ");
+            System.out.println();
+        }
+
+        System.out.println();
+
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++)
+                System.out.print(distance[x][y][1] + " ");
+            System.out.println();
+        }
+        System.out.println("------");
+
+
+        int dist1 = distance[xSize - 1][ySize - 1][0];
+        System.out.println("dist1 = " + dist1);
+        int dist2 = distance[xSize - 1][ySize - 1][1];
+        System.out.println("dist2 = " + dist2);
+
+        if (dist1 == -1 && dist2 == -1)
+            bw.write(String.valueOf(-1));
+        else if (dist1 == -1 && dist2 != -1)
+            bw.write(String.valueOf(dist2 + 1));
+        else if (dist1 != -1 && dist2 == -1)
+            bw.write(String.valueOf(dist1 + 1));
+        else
+            bw.write(String.valueOf(Math.min(dist1, dist2) + 1));
+
+        bw.flush();
+    }
+
+    static class Pos2 {
+        int x;
+        int y;
+        boolean broken;
+
+        public Pos2(int x, int y, boolean broken) {
+            this.x = x;
+            this.y = y;
+            this.broken = broken;
+        }
+    }
+
+
+    private void failCode() throws IOException {
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+        OutputStreamWriter osw = new OutputStreamWriter(System.out);
+        BufferedWriter bw = new BufferedWriter(osw);
+
+        StringTokenizer boardSpec = new StringTokenizer(br.readLine());
+
+        int xSize = Integer.parseInt(boardSpec.nextToken());
+        int ySize = Integer.parseInt(boardSpec.nextToken());
+
+        int[][] board = new int[xSize][ySize];
         int[][] distance = new int[xSize][ySize];
 
         int[] dx = {-1, 0, 1, 0};
@@ -24,6 +127,7 @@ public class AppliedWallBreakingAndMovement {
 
         List<Pos> walls = new ArrayList<>();
 
+        // O(NM)
         for (int x = 0; x < xSize; x++) {
             String[] boardLine = br.readLine().split("");
 
@@ -42,6 +146,7 @@ public class AppliedWallBreakingAndMovement {
 
         queue.add(new Pos(0, 0));
 
+        // O(NM)
         while (!queue.isEmpty()) {
             Pos popped = queue.poll();
 
@@ -69,6 +174,7 @@ public class AppliedWallBreakingAndMovement {
         if (shortest == 0)
             shortest = xSize * ySize + 1;
 
+        // O(NM * walls.size) -> (NM + NM) * walls.size
         for (int i = 0; i < walls.size(); i++) {
             Pos wall = walls.get(i);
 
